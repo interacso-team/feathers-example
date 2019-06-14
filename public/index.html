@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Feathers</title>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/core-js/2.1.4/core.min.js"></script>
+    <script src="//unpkg.com/@feathersjs/client@^3.0.0/dist/feathers.js"></script>
+    <script src="//unpkg.com/socket.io-client@1.7.3/dist/socket.io.js"></script>
+</head>
+
+<body>
+    <input type="text">
+    <button onclick="newtask()">Crear tarea</button>
+    <span>Mi lista de tareas:</span>
+    <div id="tasks"></div>
+    <script>
+        var socket = io('http://localhost:3030');
+        var server = feathers();
+        server.configure(feathers.socketio(socket));
+        server.configure(feathers.authentication());
+
+
+        function newtask() {
+            server.service('task').create({
+                author: 'Jairo',
+                name: document.querySelector('input').value
+            })
+        }
+
+        async function init() {
+            document.querySelector("#tasks").innerHTML = ""
+            const tasks = await server.service('task').find()
+            for (const t of tasks.data) {
+                document.querySelector("#tasks").innerHTML += '<br>' + t.name
+            }
+        }
+
+        init()
+
+        server.service('task').on('created', message => {
+            document.querySelector("#tasks").innerHTML += '<br>' + message.name
+        })
+
+        // server.service('users').create({
+        //     email: "jairo",
+        //     password: "jairo"
+        // })
+
+        server.authenticate({
+            strategy: 'local',
+            email: 'jairo',
+            password: 'jairo'
+        }).then(() => {
+            server.service('users').find().then(console.log)
+        })
+
+
+    </script>
+</body>
+
+</html>

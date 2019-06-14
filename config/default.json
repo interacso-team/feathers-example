@@ -1,0 +1,42 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "nedb": "../data",
+  "authentication": {
+    "secret": "0a1a0dab17587309b112ef5afb074a58147b75d688800734c7e1fbd0321af241c83025c1cd171c3e382465df6c8db9a0c4ef093173f772651f1fdb3b2a309f86dac95bf20d699fdc02ffb28ae59fcc36749493c92fabf49e0fddb1769f29d468ee0b9710cb205eda3edff0d66e0aa2d0f7022a71f84d0d1ec024ed580969876fb88256865d5f2a2cdeb11c756a2afd3d97a94d4d07e5c61aa7be7fec634710ed5be7597b331e0052f29408da95a81c0a8b076096ddcab4174d2882003789ec585e515f48c165eb2a5585e5a31bbd44628a52d3d3cfdeedf2ed088d002f209b8782cfde15dcf0b94ddbf77ca229aba0f46e9ebb2c4ef9d937cf639e5b021a1d72",
+    "strategies": [
+      "jwt"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "google": {
+      "clientID": "your google client id",
+      "clientSecret": "your google client secret",
+      "successRedirect": "/",
+      "scope": [
+        "profile openid email"
+      ]
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "feathers-jwt",
+      "httpOnly": false,
+      "secure": false
+    }
+  }
+}
